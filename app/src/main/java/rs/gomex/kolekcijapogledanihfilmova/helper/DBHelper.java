@@ -6,6 +6,7 @@ import android.database.sqlite.SQLiteDatabase;
 
 import com.j256.ormlite.android.apptools.OrmLiteSqliteOpenHelper;
 import com.j256.ormlite.dao.Dao;
+import com.j256.ormlite.stmt.DeleteBuilder;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
 
@@ -17,7 +18,7 @@ public class DBHelper extends OrmLiteSqliteOpenHelper {
 
 
     public static final String DB_NAME = "movie.db";
-    private static final int DB_VERSION = 1;
+    private static final int DB_VERSION = 2;
     private Dao<MovieDb, Integer> movieDao;
 
     public DBHelper(Context context) {
@@ -93,4 +94,12 @@ public class DBHelper extends OrmLiteSqliteOpenHelper {
     public void deleteMovieById(int id) throws java.sql.SQLException {
         getMovieDao().deleteById(id);
     }
+
+    public void deleteAll() throws java.sql.SQLException {
+        DeleteBuilder<MovieDb, Integer> deleteBuilder = getMovieDao().deleteBuilder();
+        deleteBuilder.where().isNotNull("id");
+        deleteBuilder.delete();
+    }
+
+
 }

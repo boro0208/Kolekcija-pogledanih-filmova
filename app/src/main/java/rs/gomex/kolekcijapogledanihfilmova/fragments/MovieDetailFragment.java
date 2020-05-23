@@ -8,6 +8,9 @@ import androidx.fragment.app.Fragment;
 
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -41,7 +44,6 @@ public class MovieDetailFragment extends Fragment {
     private ImageView detailPoster;
     private TextView detailTitle,detailType,detailYear,detailRuntime,detailPlot,detailGenre,detailLanguage,detailAwards;
     private Movie movie;
-    private String title,year,runtime,poster,plot,genre,language,awards;
     private DBHelper dbHelper;
 
     public MovieDetailFragment() {
@@ -53,7 +55,9 @@ public class MovieDetailFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_movie_detail, container, false);
+        View v =inflater.inflate(R.layout.fragment_movie_detail, container, false);
+        setHasOptionsMenu(true);
+        return v;
     }
 
     @Override
@@ -71,37 +75,11 @@ public class MovieDetailFragment extends Fragment {
         detailLanguage = view.findViewById(R.id.tvDetailLanguage);
         detailAwards = view.findViewById(R.id.tvDetailAwards);
 
-
-        title = detailTitle.getText().toString();
-        year = detailYear.getText().toString();
-        runtime = detailRuntime.getText().toString();
-        plot = detailPlot.getText().toString();
-        genre = detailGenre.getText().toString();
-        language = detailLanguage.getText().toString();
-        awards = detailAwards.getText().toString();
-
-
-
         getMovie(id);
-        dbHelper = new DBHelper(getContext());
-        dbHelper.addItem(id,poster,title,genre,year,runtime,plot,language,awards);
-
-        try {
-            List<MovieDb> lista = dbHelper.getAll();
-            for (MovieDb m : lista
-            ) {
-
-                Log.d("test", "onViewCreated: "+m.getId());
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-
 
     }
 
-    private void getMovie(String id){
+    private void getMovie(final String id){
         Map<String, String> query = new HashMap<String, String>();
         query.put("apikey", "c5ca7131");
         query.put("i", id);
@@ -130,7 +108,10 @@ public class MovieDetailFragment extends Fragment {
                     detailLanguage.setText(movie.getLanguage());
                     detailPlot.setText(movie.getPlot());
 
-                    poster = movie.getPoster().toString();
+
+                    dbHelper = new DBHelper(getContext());
+                    dbHelper.addItem(id,movie.getPoster(),movie.getTitle(),movie.getGenre(),movie.getYear(),movie.getRuntime(),movie.getPlot(),movie.getLanguage(),movie.getAwards());
+
                 }
             }
 
@@ -139,5 +120,27 @@ public class MovieDetailFragment extends Fragment {
                 Toast.makeText(getContext(), "Something went wrong...Please try later!", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_delete, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.delete:
+//                dbHelper = new DBHelper(getContext());
+//                try {
+//                    dbHelper.deleteMovieById(Integer.valueOf(id));
+//                } catch (SQLException e) {
+//                    e.printStackTrace();
+//                }
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 }
