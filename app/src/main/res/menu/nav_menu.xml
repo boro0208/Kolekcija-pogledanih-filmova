@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <group android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/mojiFilmovi"
+            android:icon="@android:drawable/ic_menu_zoom"
+            android:title="Moji filmovi" />
+        <item
+            android:id="@+id/pretraga"
+            android:icon="@android:drawable/ic_search_category_default"
+            android:title="Pretraga" />
+
+        <item
+            android:id="@+id/podesavanja"
+            android:icon="@android:drawable/stat_notify_chat"
+            android:title="Podesavanja" />
+
+        <item
+            android:id="@+id/obrisi"
+            android:icon="@android:drawable/ic_delete"
+            android:title="Obrisi sve" />
+
+    </group>
+
+
+</menu>
